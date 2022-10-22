@@ -47,8 +47,10 @@ function computeEquationForOperators(operator) {
 
   if ((answer !== null || equation !== null) && (OPERATORS.includes(equation[equation.length - 1]))) {
     return equation;
+  } else if (equation.length <= 10) {
+    return equation + number;
   } else {
-    return equation + operator;
+    return equation
   }
 }
 
@@ -56,15 +58,17 @@ function computeEquationForNumbers(number) {
   if ((equation === null) || (lastAnswerAvailable === true)) {
     lastAnswerAvailable = false;
     return number;
-  } else {
+  } else if (equation.length <= 10) {
     return equation + number;
+  } else {
+    return equation
   }
 }
 
 function computeAnswer() {
   let regularExp = /\/0{1,}?.0{0,}![1-9]/i;
   if (regularExp.test(equation) === true) {
-    return "Error";
+    return "w";
   } else {
     return (Math.round(eval(equation) * 10000) / 10000);
   }
