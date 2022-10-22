@@ -23,7 +23,7 @@ const BUTTON_0 = document.getElementById("button0");
 const OPERATORS = ["/", "*", "-", "+", "."];
 
 let equation = null;
-let answer = null;
+let answer = NaN;
 let lastAnswerAvailable = false;
 
 function updateDisplayEquation() {
@@ -35,7 +35,7 @@ function updateDisplayEquation() {
 }
 
 function updateDisplayAnswer() {
-  if (answer == null) {
+  if (answer == Nan) {
     ANSWER_BAR.innerHTML = "";
   } else {
     ANSWER_BAR.innerHTML = answer;
@@ -45,7 +45,7 @@ function updateDisplayAnswer() {
 function computeEquationForOperators(operator) {
   lastAnswerAvailable = false;
 
-  if ((answer !== null || equation !== null) && (OPERATORS.includes(equation[equation.length - 1]))) {
+  if ((answer !== NaN || equation !== null) && (OPERATORS.includes(equation[equation.length - 1]))) {
     return equation;
   } else if (equation.length <= 10) {
     return equation + operator;
@@ -116,7 +116,7 @@ function buttonEqualPressed(event) {
 
 function buttonClearPressed(event) {
   equation = null;
-  answer = null;
+  answer = NaN;
   lastAnswerAvailable = false;
   updateDisplayEquation();
   updateDisplayAnswer();
