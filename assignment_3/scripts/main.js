@@ -68,7 +68,7 @@ function computeEquationForNumbers(number) {
 function computeAnswer() {
   let regularExp = /\/0{1,}?.0{0,}![1-9]/i;
   if (regularExp.test(equation) === true) {
-    return "w";
+    return "Error";
   } else {
     return (Math.round(eval(equation) * 10000) / 10000);
   }
