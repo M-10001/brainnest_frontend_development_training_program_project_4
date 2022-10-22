@@ -61,9 +61,6 @@ function setAnswer() {
 }
 
 function setEquationForOperators(operator) {
-  lastAnswerAvailable = false;
-  operatorUsed = true;
-
   if (
     (error !== true) &&
     (equation !== null) &&
@@ -72,6 +69,8 @@ function setEquationForOperators(operator) {
     !(equation.length > MAX_EQUATION_LENGTH)
   ) {
     equation = equation + operator;
+    operatorUsed = true;
+    lastAnswerAvailable = false;
   }
 }
 
