@@ -48,7 +48,7 @@ function computeEquationForOperators(operator) {
   if ((answer !== null || equation !== null) && (OPERATORS.includes(equation[equation.length - 1]))) {
     return equation;
   } else if (equation.length <= 10) {
-    return equation + number;
+    return equation + operator;
   } else {
     return equation
   }
