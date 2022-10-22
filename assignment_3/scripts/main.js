@@ -21,9 +21,11 @@ const BUTTON_9 = document.getElementById("button9");
 const BUTTON_0 = document.getElementById("button0");
 
 const OPERATORS = ["/", "*", "-", "+", "."];
+const MAX_EQUATION_LENGTH = 10;
 
 let equation = null;
 let answer = NaN;
+let operatorUsed = false;
 let lastAnswerAvailable = false;
 
 function updateDisplayEquation() {
@@ -35,7 +37,7 @@ function updateDisplayEquation() {
 }
 
 function updateDisplayAnswer() {
-  if (answer === NaN) {
+  if (isNaN(answer)) {
     ANSWER_BAR.innerHTML = "";
   } else {
     ANSWER_BAR.innerHTML = answer;
@@ -44,33 +46,37 @@ function updateDisplayAnswer() {
 
 function computeEquationForOperators(operator) {
   lastAnswerAvailable = false;
+  operatorUsed = true;
 
-  if ((answer !== NaN || equation !== null) && (OPERATORS.includes(equation[equation.length - 1]))) {
+  if ((equation === null) || (OPERATORS.includes(equation[equation.length - 1]))) {
     return equation;
-  } else if (equation.length <= 10) {
+  } else if (equation.length <= MAX_EQUATION_LENGTH) {
     return equation + operator;
   } else {
-    return equation
+    return equation;
   }
 }
 
-function computeEquationForNumbers(number) {
+function computeEquationForNumbers(stringNumber) {
   if ((equation === null) || (lastAnswerAvailable === true)) {
     lastAnswerAvailable = false;
-    return number;
-  } else if (equation.length <= 10) {
-    return equation + number;
+    return stringNumber;
+  } else if (equation.length <= MAX_EQUATION_LENGTH) {
+    return equation + stringNumber;
   } else {
-    return equation
+    return equation;
   }
 }
 
 function computeAnswer() {
   let regularExp = /\/0{1,}?.0{0,}![1-9]/i;
-  if (regularExp.test(equation) === true) {
+
+  if (regularExp.test(equation) || OPERATORS.includes(equation[equation.length - 1])) {
     return "Error";
-  } else {
+  } else if (operatorUsed === true) {
     return (Math.round(eval(equation) * 10000) / 10000);
+  } else {
+    return answer;
   }
 }
 
@@ -109,14 +115,17 @@ function buttonDecimalPressed(event) {
 
 function buttonEqualPressed(event) {
   answer = computeAnswer();
-  equation = answer;
   updateDisplayAnswer();
+  equation = "" + answer;
+  answer = NaN;
+  operatorUsed = false;
   lastAnswerAvailable = true;
 }
 
 function buttonClearPressed(event) {
   equation = null;
   answer = NaN;
+  operatorUsed = false;
   lastAnswerAvailable = false;
   updateDisplayEquation();
   updateDisplayAnswer();
@@ -130,52 +139,52 @@ BUTTON_DECIMAL.addEventListener("click", buttonDecimalPressed);
 BUTTON_EQUAL.addEventListener("click", buttonEqualPressed);
 BUTTON_CLEAR.addEventListener("click", buttonClearPressed);
 
-BUTTON_0.addEventListener("click", (event) => {
+BUTTON_0.addEventListener("click", event => {
   equation = computeEquationForNumbers("0");
   updateDisplayEquation();
 });
 
-BUTTON_1.addEventListener("click", (event) => {
+BUTTON_1.addEventListener("click", event => {
   equation = computeEquationForNumbers("1");
   updateDisplayEquation();
 });
 
-BUTTON_2.addEventListener("click", (event) => {
+BUTTON_2.addEventListener("click", event => {
   equation = computeEquationForNumbers("2");
   updateDisplayEquation();
 });
 
-BUTTON_3.addEventListener("click", (event) => {
+BUTTON_3.addEventListener("click", event => {
   equation = computeEquationForNumbers("3");
   updateDisplayEquation();
 });
 
-BUTTON_4.addEventListener("click", (event) => {
+BUTTON_4.addEventListener("click", event => {
   equation = computeEquationForNumbers("4");
   updateDisplayEquation();
 });
 
-BUTTON_5.addEventListener("click", (event) => {
+BUTTON_5.addEventListener("click", event => {
   equation = computeEquationForNumbers("5");
   updateDisplayEquation();
 });
 
-BUTTON_6.addEventListener("click", (event) => {
+BUTTON_6.addEventListener("click", event => {
   equation = computeEquationForNumbers("6");
   updateDisplayEquation();
 });
 
-BUTTON_7.addEventListener("click", (event) => {
+BUTTON_7.addEventListener("click", event => {
   equation = computeEquationForNumbers("7");
   updateDisplayEquation();
 });
 
-BUTTON_8.addEventListener("click", (event) => {
+BUTTON_8.addEventListener("click", event => {
   equation = computeEquationForNumbers("8");
   updateDisplayEquation();
 });
 
-BUTTON_9.addEventListener("click", (event) => {
+BUTTON_9.addEventListener("click", event => {
   equation = computeEquationForNumbers("9");
   updateDisplayEquation();
 });
