@@ -7,6 +7,7 @@ const BUTTON_MINUS = document.getElementById("buttonMinus");
 const BUTTON_MULTIPLY = document.getElementById("buttonMultiply");
 const BUTTON_DIVIDE = document.getElementById("buttonDivide");
 const BUTTON_EQUAL = document.getElementById("buttonEqual");
+const BUTTON_DECIMAL = document.getElementById("buttonDecimal");
 
 const BUTTON_1 = document.getElementById("button1");
 const BUTTON_2 = document.getElementById("button2");
@@ -62,7 +63,7 @@ function computeEquationForNumbers(number) {
 
 function computeAnswer() {
   let regularExp = /\/0{1,}?.0{0,}![1-9]/i;
-  if (regularExp.test(equation)) {
+  if (regularExp.test(equation) === true) {
     return "Error";
   } else {
     return (Math.round(eval(equation) * 10000) / 10000);
@@ -121,6 +122,7 @@ BUTTON_DIVIDE.addEventListener("click", buttonDividePressed);
 BUTTON_MULTIPLY.addEventListener("click", buttonMultiplyPressed);
 BUTTON_MINUS.addEventListener("click", buttonMinusPressed);
 BUTTON_PLUS.addEventListener("click", buttonPlusPressed);
+BUTTON_DECIMAL.addEventListener("click", buttonDecimalPressed);
 BUTTON_EQUAL.addEventListener("click", buttonEqualPressed);
 BUTTON_CLEAR.addEventListener("click", buttonClearPressed);
 
