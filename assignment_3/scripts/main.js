@@ -47,83 +47,78 @@ function updateDisplayAnswer() {
   }
 }
 
-function computeAnswer() {
+function setAnswer() {
   let regularExp = /\/0{1,}?.0{0,}![1-9]/i;
 
   if (equation === null) {
-    return NaN;
+    answer = NaN;
   } else if ((error === true) || regularExp.test(equation) || OPERATORS.includes(equation[equation.length - 1])) {
     error = true;
-    return NaN;
+    answer = NaN;
   } else if (operatorUsed === true) {
-    return (Math.round(eval(equation) * 10000) / 10000);
-  } else {
-    return answer;
+    answer = (Math.round(eval(equation) * 10000) / 10000);
   }
 }
 
-function computeEquationForOperators(operator) {
+function setEquationForOperators(operator) {
   lastAnswerAvailable = false;
   operatorUsed = true;
 
   if (
-    (error === true) ||
-    (equation === null) ||
-    OPERATORS.includes(equation[equation.length - 1]) ||
-    (equation.length > MAX_EQUATION_LENGTH)
+    (error !== true) &&
+    (equation !== null) &&
+    (equation.length > 0) &&
+    !(OPERATORS.includes(equation[equation.length - 1])) &&
+    !(equation.length > MAX_EQUATION_LENGTH)
   ) {
-    return equation;
-  } else {
-    return equation + operator;
+    equation = equation + operator;
   }
 }
 
-function computeEquationForNumbers(stringNumber) {
+function setEquationForNumbers(stringNumber) {
   if ((equation === null) || (lastAnswerAvailable === true)) {
     lastAnswerAvailable = false;
-    return stringNumber;
+    equation = stringNumber;
   } else if (equation.length <= MAX_EQUATION_LENGTH && error === false) {
-    return equation + stringNumber;
-  } else {
-    return equation;
+    equation = equation + stringNumber;
   }
 }
 
 function buttonDividePressed(event) {
-  answer = computeAnswer();
+  setAnswer();
   updateDisplayAnswer();
-  equation = computeEquationForOperators("/");
+  setEquationForOperators("/");
   updateDisplayEquation();
 }
 
 function buttonMultiplyPressed(event) {
-  answer = computeAnswer();
+  setAnswer();
   updateDisplayAnswer();
-  equation = computeEquationForOperators("*");
+  setEquationForOperators("*");
   updateDisplayEquation();
 }
 
 function buttonMinusPressed(event) {
-  answer = computeAnswer();
+  setAnswer();
   updateDisplayAnswer();
-  equation = computeEquationForOperators("-");
+  setEquationForOperators("-");
   updateDisplayEquation();
 }
 
 function buttonPlusPressed(event) {
-  answer = computeAnswer();
+  setAnswer();
   updateDisplayAnswer();
-  equation = computeEquationForOperators("+");
+  setEquationForOperators("+");
   updateDisplayEquation();
 }
 
 function buttonDecimalPressed(event) {
-  equation = computeEquationForOperators(".");
+  setEquationForOperators(".");
   updateDisplayEquation();
 }
 
 function buttonEqualPressed(event) {
-  answer = computeAnswer();
+  setAnswer();
   updateDisplayAnswer();
 
   if ((error === false) && !(isNaN(answer))) {
@@ -153,51 +148,51 @@ BUTTON_EQUAL.addEventListener("click", buttonEqualPressed);
 BUTTON_CLEAR.addEventListener("click", buttonClearPressed);
 
 BUTTON_0.addEventListener("click", event => {
-  equation = computeEquationForNumbers("0");
+  setEquationForNumbers("0");
   updateDisplayEquation();
 });
 
 BUTTON_1.addEventListener("click", event => {
-  equation = computeEquationForNumbers("1");
+  setEquationForNumbers("1");
   updateDisplayEquation();
 });
 
 BUTTON_2.addEventListener("click", event => {
-  equation = computeEquationForNumbers("2");
+  setEquationForNumbers("2");
   updateDisplayEquation();
 });
 
 BUTTON_3.addEventListener("click", event => {
-  equation = computeEquationForNumbers("3");
+  setEquationForNumbers("3");
   updateDisplayEquation();
 });
 
 BUTTON_4.addEventListener("click", event => {
-  equation = computeEquationForNumbers("4");
+  setEquationForNumbers("4");
   updateDisplayEquation();
 });
 
 BUTTON_5.addEventListener("click", event => {
-  equation = computeEquationForNumbers("5");
+  setEquationForNumbers("5");
   updateDisplayEquation();
 });
 
 BUTTON_6.addEventListener("click", event => {
-  equation = computeEquationForNumbers("6");
+  setEquationForNumbers("6");
   updateDisplayEquation();
 });
 
 BUTTON_7.addEventListener("click", event => {
-  equation = computeEquationForNumbers("7");
+  setEquationForNumbers("7");
   updateDisplayEquation();
 });
 
 BUTTON_8.addEventListener("click", event => {
-  equation = computeEquationForNumbers("8");
+  setEquationForNumbers("8");
   updateDisplayEquation();
 });
 
 BUTTON_9.addEventListener("click", event => {
-  equation = computeEquationForNumbers("9");
+  setEquationForNumbers("9");
   updateDisplayEquation();
 });
