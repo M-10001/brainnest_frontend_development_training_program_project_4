@@ -69,8 +69,8 @@ function computeEquationForOperators(operator) {
   if (
     (error === true) ||
     (equation === null) ||
-    (OPERATORS.includes(equation[equation.length - 1])) ||
-    equation.length > MAX_EQUATION_LENGTH
+    OPERATORS.includes(equation[equation.length - 1]) ||
+    (equation.length > MAX_EQUATION_LENGTH)
   ) {
     return equation;
   } else {
