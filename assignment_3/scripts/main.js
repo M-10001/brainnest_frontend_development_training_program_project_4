@@ -27,7 +27,7 @@ let answer = NaN;
 let lastAnswerAvailable = false;
 
 function updateDisplayEquation() {
-  if (equation == null) {
+  if (equation === null) {
     EQUATION_BAR.innerHTML = "";
   } else {
     EQUATION_BAR.innerHTML = equation;
@@ -35,7 +35,7 @@ function updateDisplayEquation() {
 }
 
 function updateDisplayAnswer() {
-  if (answer == Nan) {
+  if (answer === NaN) {
     ANSWER_BAR.innerHTML = "";
   } else {
     ANSWER_BAR.innerHTML = answer;
