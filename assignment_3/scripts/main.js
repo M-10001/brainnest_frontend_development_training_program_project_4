@@ -21,12 +21,13 @@ const BUTTON_9 = document.getElementById("button9");
 const BUTTON_0 = document.getElementById("button0");
 
 const OPERATORS = ["/", "*", "-", "+", "."];
-const MAX_EQUATION_LENGTH = 10;
+const MAX_EQUATION_LENGTH = 20;
 
 let equation = null;
 let answer = NaN;
 let operatorUsed = false;
 let lastAnswerAvailable = false;
+let error = false;
 
 function updateDisplayEquation() {
   if (equation === null) {
@@ -37,10 +38,27 @@ function updateDisplayEquation() {
 }
 
 function updateDisplayAnswer() {
-  if (isNaN(answer)) {
+  if (error === true) {
+    ANSWER_BAR.innerHTML = "Error";
+  } else if (isNaN(answer)) {
     ANSWER_BAR.innerHTML = "";
   } else {
     ANSWER_BAR.innerHTML = answer;
+  }
+}
+
+function computeAnswer() {
+  let regularExp = /\/0{1,}?.0{0,}![1-9]/i;
+
+  if (equation === null) {
+    return NaN;
+  } else if ((error === true) || regularExp.test(equation) || OPERATORS.includes(equation[equation.length - 1])) {
+    error = true;
+    return NaN;
+  } else if (operatorUsed === true) {
+    return (Math.round(eval(equation) * 10000) / 10000);
+  } else {
+    return answer;
   }
 }
 
@@ -48,12 +66,15 @@ function computeEquationForOperators(operator) {
   lastAnswerAvailable = false;
   operatorUsed = true;
 
-  if ((equation === null) || (OPERATORS.includes(equation[equation.length - 1]))) {
+  if (
+    (error === true) ||
+    (equation === null) ||
+    (OPERATORS.includes(equation[equation.length - 1])) ||
+    equation.length > MAX_EQUATION_LENGTH
+  ) {
     return equation;
-  } else if (equation.length <= MAX_EQUATION_LENGTH) {
-    return equation + operator;
   } else {
-    return equation;
+    return equation + operator;
   }
 }
 
@@ -61,22 +82,10 @@ function computeEquationForNumbers(stringNumber) {
   if ((equation === null) || (lastAnswerAvailable === true)) {
     lastAnswerAvailable = false;
     return stringNumber;
-  } else if (equation.length <= MAX_EQUATION_LENGTH) {
+  } else if (equation.length <= MAX_EQUATION_LENGTH && error === false) {
     return equation + stringNumber;
   } else {
     return equation;
-  }
-}
-
-function computeAnswer() {
-  let regularExp = /\/0{1,}?.0{0,}![1-9]/i;
-
-  if (regularExp.test(equation) || OPERATORS.includes(equation[equation.length - 1])) {
-    return "Error";
-  } else if (operatorUsed === true) {
-    return (Math.round(eval(equation) * 10000) / 10000);
-  } else {
-    return answer;
   }
 }
 
@@ -116,19 +125,23 @@ function buttonDecimalPressed(event) {
 function buttonEqualPressed(event) {
   answer = computeAnswer();
   updateDisplayAnswer();
-  equation = "" + answer;
-  answer = NaN;
-  operatorUsed = false;
-  lastAnswerAvailable = true;
+
+  if ((error === false) && !(isNaN(answer))) {
+    equation = "" + answer;
+    answer = NaN;
+    operatorUsed = false;
+    lastAnswerAvailable = true;
+  }
 }
 
 function buttonClearPressed(event) {
-  equation = null;
   answer = NaN;
+  equation = null;
   operatorUsed = false;
   lastAnswerAvailable = false;
-  updateDisplayEquation();
+  error = false;
   updateDisplayAnswer();
+  updateDisplayEquation();
 }
 
 BUTTON_DIVIDE.addEventListener("click", buttonDividePressed);
