@@ -2,6 +2,7 @@ const EQUATION_BAR = document.getElementById("equationBar");
 const ANSWER_BAR = document.getElementById("answerBar");
 
 const BUTTON_CLEAR = document.getElementById("buttonClear");
+const BUTTON_BACK_SPACE = document.getElementById("buttonBackSpace");
 const BUTTON_EQUAL = document.getElementById("buttonEqual");
 
 const BUTTON_DIVIDE = document.getElementById("buttonDivide");
@@ -22,24 +23,18 @@ const BUTTON_8 = document.getElementById("button8");
 const BUTTON_9 = document.getElementById("button9");
 const BUTTON_0 = document.getElementById("button0");
 
-const OPERATORS = ["/", "*", "-", "+"];
-const NUMPAD_VALUES = [".", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+const OPERATORS = ["/", "*", "-", "+", ".", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+const NUMPAD_VALUES = []
 const MAX_EQUATION_LENGTH = 20;
 
-let equation = null;
+let equation = "";
 let answer = NaN;
 let lastAnswerAvailable = false;
 let error = false;
 
-function updateDisplayEquation() {
-  if (equation === null) {
-    EQUATION_BAR.innerHTML = "";
-  } else {
-    EQUATION_BAR.innerHTML = equation;
-  }
-}
+function updateDisplay() {
+  EQUATION_BAR.innerHTML = equation;
 
-function updateDisplayAnswer() {
   if (error === true) {
     ANSWER_BAR.innerHTML = "Error";
   } else if (isNaN(answer)) {
@@ -49,24 +44,43 @@ function updateDisplayAnswer() {
   }
 }
 
-function setEquation(parameter) {
-
-}
-
-function setAnswer() {
+function evaluateEquationAndAnswer() {
 
 }
 
 function parseAndEvaluateInput(input) {
+  if ((error === false) && OPERATORS.includes) {
+    equation = equation + input;
+    evaluateEquationAndAnswer();
+  } else {
+    error = true;
+  }
 
+  updateDisplay();
 }
 
-function resetALL() {
+function decrementAndEvaluateEquation() {
+   if (error === false) {
+     equation = equation.substring(0, equation.length - 1);
+     evaluateEquationAndAnswer();
+     updateDisplay();
+   }
+}
 
+function resetAll() {
+  equation = "";
+  answer = NaN;
+  lastAnswerAvailable = false;
+  error = false;
+  updateDisplay();
 }
 
 BUTTON_CLEAR.addEventListener("click", event => {
   resetAll();
+});
+
+BUTTON_BACK_SPACE.addEventListener("click", event => {
+  decrementAndEvaluateEquation();
 });
 
 BUTTON_EQUAL.addEventListener("click", event => {
