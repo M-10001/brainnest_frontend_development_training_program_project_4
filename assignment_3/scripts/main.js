@@ -57,32 +57,44 @@ function computeAnswer() {
   }
 }
 
+function computeForInputEqual() {
+  computeAnswer();
+
+  if (isNaN(answer) === true) {
+    error = true;
+  } else {
+    lastAnswerAvailable = true;
+  }
+}
+
+function computeForInputOperator(input) {
+  if (lastAnswerAvailable === true) {
+    equation = "" + answer;
+    lastAnswerAvailable = false;
+  }
+
+  equation = equation + input;
+  answer = NaN;
+}
+
+function computeForInputNumber(input) {
+  if (lastAnswerAvailable === true) {
+    equation = "";
+    lastAnswerAvailable = false;
+  }
+
+  equation = equation + input;
+  computeAnswer();
+}
+
 function parseAndEvaluateInput(input) {
   if (error === false) {
     if (input === "=") {
-      computeAnswer();
-
-      if (isNaN(answer) === true) {
-        error = true;
-      } else {
-        lastAnswerAvailable = true;
-      }
+      computeForInputEqual();
     } else if (OPERATORS.includes(input)) {
-      if (lastAnswerAvailable === true) {
-        equation = "" + answer;
-        lastAnswerAvailable = false;
-      }
-
-      equation = equation + input;
-      answer = NaN;
+      computeForInputOperator(input);
     } else if (NUMBERS.includes(input)) {
-      if (lastAnswerAvailable === true) {
-        equation = "";
-        lastAnswerAvailable = false;
-      }
-
-      equation = equation + input;
-      computeAnswer();
+      computeForInputNumber(input);
     } else {
       error = true;
     }
