@@ -53,8 +53,6 @@ function parseAndEvaluateInput(input) {
       equation = "" + answer;
     }
 
-    answer = NaN;
-
     if (input === "=") {
       evaluateEquationAndAnswer();
 
@@ -63,6 +61,7 @@ function parseAndEvaluateInput(input) {
       }
     } else if (OPERATORS.includes(input)) {
       equation = equation + input;
+      evaluateEquationAndAnswer();
       lastAnswerAvailable = false;
     } else if (NUMBERS.includes(input)) {
       if (lastAnswerAvailable === true) {
@@ -70,8 +69,9 @@ function parseAndEvaluateInput(input) {
         lastAnswerAvailable = false;
       } else {
         equation = equation + input;
-        evaluateEquationAndAnswer();
       }
+      
+      evaluateEquationAndAnswer();
     } else {
       error = true;
     }
