@@ -49,10 +49,6 @@ function evaluateEquationAndAnswer() {
 
 function parseAndEvaluateInput(input) {
   if (error === false) {
-    if (lastAnswerAvailable === true) {
-      equation = "" + answer;
-    }
-
     if (input === "=") {
       evaluateEquationAndAnswer();
 
@@ -60,17 +56,20 @@ function parseAndEvaluateInput(input) {
         lastAnswerAvailable = true;
       }
     } else if (OPERATORS.includes(input)) {
+      if (lastAnswerAvailable === true) {
+        equation = "" + answer;
+        lastAnswerAvailable = false;
+      }
+
       equation = equation + input;
       evaluateEquationAndAnswer();
-      lastAnswerAvailable = false;
     } else if (NUMBERS.includes(input)) {
       if (lastAnswerAvailable === true) {
-        equation = "" + input;
+        equation = "";
         lastAnswerAvailable = false;
-      } else {
-        equation = equation + input;
       }
       
+      equation = equation + input;
       evaluateEquationAndAnswer();
     } else {
       error = true;
