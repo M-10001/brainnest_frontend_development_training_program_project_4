@@ -36,23 +36,35 @@ function updateDisplay() {
 
   if (error === true) {
     ANSWER_BAR.innerHTML = "Error";
-  } else if (isNaN(answer)) {
+  } else if (isNaN(answer) === true) {
     ANSWER_BAR.innerHTML = "";
   } else {
     ANSWER_BAR.innerHTML = answer;
   }
 }
 
-function evaluateEquationAndAnswer() {
-  answer = eval(equation);
+function computeAnswer() {
+  answer = NaN;
+  let temp = NaN;
+
+  try {
+    temp = eval(equation);
+  } catch (e) {
+  }
+
+  if ((isFinite(temp) === true) && (isNaN(temp) === false)) {
+    answer = temp;
+  }
 }
 
 function parseAndEvaluateInput(input) {
   if (error === false) {
     if (input === "=") {
-      evaluateEquationAndAnswer();
+      computeAnswer();
 
-      if (!(isNaN(answer))) {
+      if (isNaN(answer) === true) {
+        error = true;
+      } else {
         lastAnswerAvailable = true;
       }
     } else if (OPERATORS.includes(input)) {
@@ -62,15 +74,15 @@ function parseAndEvaluateInput(input) {
       }
 
       equation = equation + input;
-      evaluateEquationAndAnswer();
+      answer = NaN;
     } else if (NUMBERS.includes(input)) {
       if (lastAnswerAvailable === true) {
         equation = "";
         lastAnswerAvailable = false;
       }
-      
+
       equation = equation + input;
-      evaluateEquationAndAnswer();
+      computeAnswer();
     } else {
       error = true;
     }
@@ -82,7 +94,7 @@ function parseAndEvaluateInput(input) {
 function decrementAndEvaluateEquation() {
    if ((error === false) && (equation !== "")) {
      equation = equation.substring(0, equation.length - 1);
-     evaluateEquationAndAnswer();
+     computeAnswer();
      lastAnswerAvailable = false;
      updateDisplay();
    }
