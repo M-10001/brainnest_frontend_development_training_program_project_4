@@ -3,9 +3,13 @@ const ANSWER_BAR = document.getElementById("answerBar");
 
 const BUTTON_CLEAR = document.getElementById("buttonClear");
 const BUTTON_BACK_SPACE = document.getElementById("buttonBackSpace");
+const BUTTON_EQUAL = document.getElementById("buttonEqual");
 
 const KEY_TO_ELEMENT = {
-  "=": document.getElementById("buttonEqual"),
+  "Clear": BUTTON_CLEAR,
+  "Backspace": BUTTON_BACK_SPACE,
+  "Enter": BUTTON_EQUAL,
+  "=": BUTTON_EQUAL,
   "/": document.getElementById("buttonDivide"),
   "*": document.getElementById("buttonMultiply"),
   "-": document.getElementById("buttonSubtract"),
@@ -60,12 +64,14 @@ function computeAnswer() {
 }
 
 function computeForInputEqual() {
-  computeAnswer();
+  if (equation !== "") {
+    computeAnswer();
 
-  if (isNaN(answer) === true) {
-    error = true;
-  } else {
-    lastAnswerAvailable = true;
+    if (isNaN(answer) === true) {
+      error = true;
+    } else {
+      lastAnswerAvailable = true;
+    }
   }
 }
 
@@ -127,6 +133,8 @@ function parseEventToValueForEvaluation(event) {
     resetAll();
   } else if ((event.target === BUTTON_BACK_SPACE) || (event.key === "Backspace")) {
     decrementAndEvaluateEquation();
+  } else if (event.target === BUTTON_EQUAL) {
+    parseInputAndEvaluate("=");
   } else {
     for (let [value, element] of Object.entries(KEY_TO_ELEMENT)) {
       if ((event.target === element) || (event.key === value)) {
@@ -136,9 +144,6 @@ function parseEventToValueForEvaluation(event) {
     }
   }
 }
-
-BUTTON_CLEAR.addEventListener("click", parseEventToValueForEvaluation);
-BUTTON_BACK_SPACE.addEventListener("click", parseEventToValueForEvaluation);
 
 for (let [value, element] of Object.entries(KEY_TO_ELEMENT)) {
   element.addEventListener("click", parseEventToValueForEvaluation);
