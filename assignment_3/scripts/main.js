@@ -6,7 +6,7 @@ const BUTTON_BACK_SPACE = document.getElementById("buttonBackSpace");
 const BUTTON_EQUAL = document.getElementById("buttonEqual");
 
 const KEY_TO_ELEMENT = {
-  "Clear": BUTTON_CLEAR,
+  "Delete": BUTTON_CLEAR,
   "Backspace": BUTTON_BACK_SPACE,
   "Enter": BUTTON_EQUAL,
   "=": BUTTON_EQUAL,
@@ -129,11 +129,11 @@ function resetAll() {
 }
 
 function parseEventToValueForEvaluation(event) {
-  if (event.target === BUTTON_CLEAR) {
+  if ((event.target === BUTTON_CLEAR) || (event.key === "Delete")) {
     resetAll();
   } else if ((event.target === BUTTON_BACK_SPACE) || (event.key === "Backspace")) {
     decrementAndEvaluateEquation();
-  } else if (event.target === BUTTON_EQUAL) {
+  } else if (event.key === "Enter") {
     parseInputAndEvaluate("=");
   } else {
     for (let [value, element] of Object.entries(KEY_TO_ELEMENT)) {
