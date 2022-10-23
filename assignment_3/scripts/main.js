@@ -9,7 +9,6 @@ const BUTTON_DIVIDE = document.getElementById("buttonDivide");
 const BUTTON_MULTIPLY = document.getElementById("buttonMultiply");
 const BUTTON_SUBTRACT = document.getElementById("buttonSubtract");
 const BUTTON_ADD = document.getElementById("buttonAdd");
-
 const BUTTON_DECIMAL = document.getElementById("buttonDecimal");
 
 const BUTTON_1 = document.getElementById("button1");
@@ -23,8 +22,8 @@ const BUTTON_8 = document.getElementById("button8");
 const BUTTON_9 = document.getElementById("button9");
 const BUTTON_0 = document.getElementById("button0");
 
-const OPERATORS = ["/", "*", "-", "+", ".", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
-const NUMPAD_VALUES = []
+const OPERATORS = ["/", "*", "-", "+", "."];
+const NUMBERS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
 const MAX_EQUATION_LENGTH = 20;
 
 let equation = "";
@@ -45,15 +44,37 @@ function updateDisplay() {
 }
 
 function evaluateEquationAndAnswer() {
-
+  answer = eval(equation);
 }
 
 function parseAndEvaluateInput(input) {
-  if ((error === false) && OPERATORS.includes) {
-    equation = equation + input;
-    evaluateEquationAndAnswer();
-  } else {
-    error = true;
+  if (error === false) {
+    if (lastAnswerAvailable === true) {
+      equation = "" + answer;
+    }
+
+    answer = NaN;
+
+    if (input === "=") {
+      evaluateEquationAndAnswer();
+
+      if (!(isNan(answer))) {
+        lastAnswerAvailable = true;
+      }
+    } else if (OPERATORS.includes(input)) {
+      equation = equation + input;
+      lastAnswerAvailable = false;
+    } else if (NUMBERS.includes(input)) {
+      if (lastAnswerAvailable === true) {
+        equation = "" + input;
+        lastAnswerAvailable = false;
+      } else {
+        equation = equation + input;
+        evaluateEquationAndAnswer();
+      }
+    } else {
+      error = true;
+    }
   }
 
   updateDisplay();
