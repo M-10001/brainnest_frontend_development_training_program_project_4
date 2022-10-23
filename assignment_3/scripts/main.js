@@ -4,7 +4,7 @@ const ANSWER_BAR = document.getElementById("answerBar");
 const BUTTON_CLEAR = document.getElementById("buttonClear");
 const BUTTON_BACK_SPACE = document.getElementById("buttonBackSpace");
 
-const PARSABLE_VALUE_TO_ELEMENT = {
+const VALUE_TO_ELEMENT = {
   "=": document.getElementById("buttonEqual"),
   "/": document.getElementById("buttonDivide"),
   "*": document.getElementById("buttonMultiply"),
@@ -131,7 +131,7 @@ function backSpaceEvent(event) {
 }
 
 function parseEventToValueForEvaluation(event) {
-  for (let [value, element] of Object.entries(PARSABLE_VALUE_TO_ELEMENT)) {
+  for (let [value, element] of Object.entries(VALUE_TO_ELEMENT)) {
     if (element === event.target) {
       parseInputAndEvaluate(value);
       break;
@@ -142,6 +142,6 @@ function parseEventToValueForEvaluation(event) {
 BUTTON_CLEAR.addEventListener("click", clearEvent);
 BUTTON_BACK_SPACE.addEventListener("click", backSpaceEvent);
 
-for (let [value, element] of Object.entries(PARSABLE_VALUE_TO_ELEMENT)) {
+for (let [value, element] of Object.entries(VALUE_TO_ELEMENT)) {
   element.addEventListener("click", parseEventToValueForEvaluation);
 }
