@@ -120,6 +120,8 @@ function resetAll() {
   updateDisplay();
 }
 
+// Code below this line is only calling code above, all logic is in the code above.
+
 BUTTON_CLEAR.addEventListener("click", event => {
   resetAll();
 });
