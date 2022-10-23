@@ -81,9 +81,10 @@ function parseAndEvaluateInput(input) {
 }
 
 function decrementAndEvaluateEquation() {
-   if (error === false) {
+   if ((error === false) && (equation !== "")) {
      equation = equation.substring(0, equation.length - 1);
      evaluateEquationAndAnswer();
+     lastAnswerAvailable = false;
      updateDisplay();
    }
 }
