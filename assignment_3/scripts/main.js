@@ -4,7 +4,7 @@ const ANSWER_BAR = document.getElementById("answerBar");
 const BUTTON_CLEAR = document.getElementById("buttonClear");
 const BUTTON_BACK_SPACE = document.getElementById("buttonBackSpace");
 
-const VALUE_TO_ELEMENT = {
+const KEY_TO_ELEMENT = {
   "=": document.getElementById("buttonEqual"),
   "/": document.getElementById("buttonDivide"),
   "*": document.getElementById("buttonMultiply"),
@@ -122,26 +122,26 @@ function resetAll() {
   updateDisplay();
 }
 
-function clearEvent(event) {
-  resetAll();
-}
-
-function backSpaceEvent(event) {
-  decrementAndEvaluateEquation();
-}
-
 function parseEventToValueForEvaluation(event) {
-  for (let [value, element] of Object.entries(VALUE_TO_ELEMENT)) {
-    if (element === event.target) {
-      parseInputAndEvaluate(value);
-      break;
+  if (event.target === BUTTON_CLEAR) {
+    resetAll();
+  } else if ((event.target === BUTTON_BACK_SPACE) || (event.key === "Backspace")) {
+    decrementAndEvaluateEquation();
+  } else {
+    for (let [value, element] of Object.entries(KEY_TO_ELEMENT)) {
+      if ((event.target === element) || (event.key === value)) {
+        parseInputAndEvaluate(value);
+        break;
+      }
     }
   }
 }
 
-BUTTON_CLEAR.addEventListener("click", clearEvent);
-BUTTON_BACK_SPACE.addEventListener("click", backSpaceEvent);
+BUTTON_CLEAR.addEventListener("click", parseEventToValueForEvaluation);
+BUTTON_BACK_SPACE.addEventListener("click", parseEventToValueForEvaluation);
 
-for (let [value, element] of Object.entries(VALUE_TO_ELEMENT)) {
+for (let [value, element] of Object.entries(KEY_TO_ELEMENT)) {
   element.addEventListener("click", parseEventToValueForEvaluation);
 }
+
+document.addEventListener("keydown", parseEventToValueForEvaluation);
