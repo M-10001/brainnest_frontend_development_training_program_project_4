@@ -58,7 +58,7 @@ function parseAndEvaluateInput(input) {
     if (input === "=") {
       evaluateEquationAndAnswer();
 
-      if (!(isNan(answer))) {
+      if (!(isNaN(answer))) {
         lastAnswerAvailable = true;
       }
     } else if (OPERATORS.includes(input)) {
