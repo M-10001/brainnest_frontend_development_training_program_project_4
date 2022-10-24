@@ -2,9 +2,51 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title></title>
+    <link rel="stylesheet" href="./stylesheets/main.css">
+    <title>Game</title>
   </head>
   <body>
+    <div class="section-1">
+      <div class="player-side">
+        <div id="playerScore" class="score">
+          Player score: 0
+        </div>
+        <div class="choice-container">
+          <div class="choice-bar">
+            Player chose:
+          </div>
+          <div id="playerChosenItem" class="chosen-item">
+            None selected
+          </div>
+        </div>
+      </div>
+      <div class="computer-side">
+        <div id="computerScore" class="score">
+          Computer score: 0
+        </div>
+        <div class="choice-container">
+          <div class="choice-bar">
+            Computer chose:
+          </div>
+          <div id="computerChosenItem" class="chosen-item">
+            None selected
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="section-2">
+      <button id="buttonRock" class="button" type="button" name="button-rock">
+        Rock
+      </button>
+      <button id="buttonScissor" class="button" type="button" name="button-scissor">
+        Scissor
+      </button>
+      <button id="buttonPaper" class="button" type="button" name="button-paper">
+        Paper
+      </button>
+    </div>
+    <div id="roundEndOutput" class="section-3">
+    </div>
     <script type="text/javascript" src="./scripts/main.js"></script>
   </body>
 </html>

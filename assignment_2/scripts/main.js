@@ -1,27 +1,42 @@
-const CHOICES = ["rock", "paper", "scissor"];
-const TOTAL_GAME_ROUNDS = 5;
+const PLAYER_SCORE = document.getElementById("playerScore");
+const COMPUTER_SCORE = document.getElementById("computerScore");
 
-function getPlayerInput() {
-  let playerSelection = prompt(`Input choice from [${CHOICES}] to play:`).toLowerCase();
+const PLAYER_CHOSEN_ITEM = document.getElementById("playerChosenItem");
+const COMPUTER_CHOSEN_ITEM = document.getElementById("computerChosenItem");
 
-  while (!CHOICES.includes(playerSelection)) {
-    playerSelection = prompt(`Wrong input.\nInput choice again from [${CHOICES}] to play:`).toLowerCase();
-  }
+const BUTTON_ROCK = document.getElementById("buttonRock");
+const BUTTON_SCISSOR = document.getElementById("buttonScissor");
+const BUTTON_PAPER = document.getElementById("buttonPaper");
 
-  return playerSelection;
-}
+const ROUND_END_OUTPUT = document.getElementById("roundEndOutput");
+
+const CHOICES = ["rock", "scissor", "paper"];
+const MAX_SCORE_IN_A_GAME = 5
+
+let gameStatistics = {
+  round: 1,
+  playerScore: 0,
+  computerScore: 0
+};
 
 function computerPlay() {
   return CHOICES[Math.floor(Math.random() * CHOICES.length)];
 }
 
+function outputPlayerAndComputerChoices(playerSelection, computerSelection) {
+  PLAYER_CHOSEN_ITEM.innerHTML = `${playerSelection.toUpperCase()}`;
+  COMPUTER_CHOSEN_ITEM.innerHTML = `${computerSelection.toUpperCase()}`;
+}
+
 function playRound(playerSelection, computerSelection) {
+  gameStatistics.round++;
+
   if (playerSelection === computerSelection) {
     return "draw";
   } else if (
-    ((playerSelection === CHOICES[0]) && (computerSelection === CHOICES[2])) ||
-    ((playerSelection === CHOICES[1]) && (computerSelection === CHOICES[0])) ||
-    ((playerSelection === CHOICES[2]) && (computerSelection === CHOICES[1]))
+    ((playerSelection === CHOICES[0]) && (computerSelection === CHOICES[1])) ||
+    ((playerSelection === CHOICES[1]) && (computerSelection === CHOICES[2])) ||
+    ((playerSelection === CHOICES[2]) && (computerSelection === CHOICES[0]))
   ) {
     return "player";
   } else {
@@ -29,55 +44,51 @@ function playRound(playerSelection, computerSelection) {
   }
 }
 
-function outputAndCalculateRoundResult(roundOutput, currentRound, score) {
+function outputWinnerOrSetGameEnd(winner) {
+  PLAYER_SCORE.innerHTML = `Player score: ${gameStatistics.playerScore}`;
+  COMPUTER_SCORE.innerHTML = `Computer score: ${gameStatistics.computerScore}`;
+
+  if ((gameStatistics.playerScore === MAX_SCORE_IN_A_GAME) ||
+    (gameStatistics.computerScore === MAX_SCORE_IN_A_GAME)
+  ) {
+    gameStatistics.round = 1;
+    gameStatistics.playerScore = 0;
+    gameStatistics.computerScore = 0;
+    ROUND_END_OUTPUT.innerHTML = `Current game ends and ${winner} wins!`;
+  } else {
+    ROUND_END_OUTPUT.innerHTML = `${winner[0].toUpperCase() + winner.substring(1)} wins!`;
+  }
+}
+
+function calculateAndOutputRoundResult(roundOutput) {
   switch (roundOutput) {
     case "draw":
-      console.log(`Round ${currentRound}: Draw!`);
+      ROUND_END_OUTPUT.innerHTML = "It's a draw!"
       break;
     case "player":
-      score.player++;
-      console.log(`Round ${currentRound}: The player wins this round!`);
+      gameStatistics.playerScore++;
+      outputWinnerOrSetGameEnd(roundOutput);
       break;
     default:
-      score.computer++;
-      console.log(`Round ${currentRound}: The computer wins this round!`)
+      outputWinnerOrSetGameEnd(roundOutput);
+      gameStatistics.computerScore++;
   }
 }
 
-function outputFinalResult(score) {
-  console.log(`Player final score: ${score.player}`);
-  console.log(`Computer final score: ${score.computer}`);
-
-  if (score.player === score.computer) {
-    console.log("It is a tie.");
-  } else if (score.player > score.computer) {
-    console.log("The player wins!");
-  } else {
-    console.log("The computer wins!");
-  }
+function game(playerSelection) {
+  let computerSelection = computerPlay();
+  outputPlayerAndComputerChoices(playerSelection, computerSelection);
+  let roundOutput = playRound(playerSelection, computerSelection);
+  calculateAndOutputRoundResult(roundOutput);
 }
 
-function game() {
-  let score = {
-    player: 0,
-    computer: 0
-  };
+BUTTON_ROCK.addEventListener("click", event => {
+  game(CHOICES[0]);
+});
 
-  for (let i = 0; i < TOTAL_GAME_ROUNDS; i++) {
-    let playerSelection = getPlayerInput();
-    let computerSelection = computerPlay();
-    console.log();
-    console.log(`Player chose: ${playerSelection}`);
-    console.log(`Computer chose: ${computerSelection}`)
-    console.log();
-    let roundOutput = playRound(playerSelection, computerSelection);
-    outputAndCalculateRoundResult(roundOutput, i + 1, score);
-    console.log();
-    console.log("----------");
-    console.log();
-  }
-
-  outputFinalResult(score);
-}
-
-game();
+BUTTON_SCISSOR.addEventListener("click", event => {
+  game(CHOICES[1]);
+});
+BUTTON_PAPER.addEventListener("click", event => {
+  game(CHOICES[2]);
+});
