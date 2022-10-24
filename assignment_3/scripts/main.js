@@ -133,7 +133,7 @@ function parseEventToValueForEvaluation(event) {
     resetAll();
   } else if ((event.target === BUTTON_BACK_SPACE) || (event.key === "Backspace")) {
     decrementAndEvaluateEquation();
-  } else if (event.key === "Enter") {
+  } else if ((event.target === BUTTON_EQUAL) || (event.key === "Enter")) {
     parseInputAndEvaluate("=");
   } else {
     for (let [value, element] of Object.entries(KEY_TO_ELEMENT)) {
